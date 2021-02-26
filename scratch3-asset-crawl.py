@@ -11,10 +11,7 @@ import re
 pretend = False
 downloaded = set()
 cdn = 'http://cdn.assets.scratch.mit.edu'
-proxies = {
-    'http': 'socks5h://127.0.0.1:10808',
-    'https': 'socks5h://127.0.0.1:10808'
-}
+proxies = { 'http': '10.198.157.119:9400','https': '10.198.157.119:9400'}
 
 def download_file(url, path):
     if os.path.exists(path):
@@ -24,7 +21,7 @@ def download_file(url, path):
     if not os.path.exists(floder):
         os.makedirs(floder)
     print(url)
-    res = requests.get(url,proxies=proxies)
+    res = requests.get(url,proxies=proxies,verify=False) # 添加了,verify=False
     if path in downloaded:
         return None
     if res.status_code == 200:
@@ -68,7 +65,7 @@ def download_media(json_path):
                     download_file(media_url % md5, download_path + md5)
                 print(m['name'])
 
-
+requests.packages.urllib3.disable_warnings() # s. https不进行安全验证时不输出警告日志
 download_media("scratch3/json_index/backdrops.json")
 download_media("scratch3/json_index/costumes.json")
 download_media("scratch3/json_index/sounds.json")
