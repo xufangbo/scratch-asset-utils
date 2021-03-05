@@ -19,7 +19,18 @@ app.get("/internalapi/asset/*/get/", function (req, res) {
   let url = req.url.replace("/get/", "");
   file = path.join(process.cwd(), url);
   if (fs.existsSync(file)) {
-    res.sendFile(file);
+    if(path.extname(file)==".svg"){
+      let content = fs.readFileSync(file);
+
+      res.setHeader("Content-Type","image/svg+xml");
+      // image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+      
+      res.end(content);
+    }else{
+      res.sendFile(file);
+    }
+
+    
   } else {
     res.end("no file " + url);
   }
