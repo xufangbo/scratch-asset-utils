@@ -25,7 +25,7 @@ app.get("/internalapi/asset/*/get/", function (req, res) {
   }
 });
 
-const port = 8602;
+const port = 8603;
 app.listen(port, function () {
   console.log("sever listen to : " + port);
 });
